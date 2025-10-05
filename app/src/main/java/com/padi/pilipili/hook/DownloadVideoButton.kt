@@ -1,11 +1,8 @@
 package com.padi.pilipili.hook
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.app.Application
 import android.view.View
-import android.widget.Toast
-import androidx.compose.runtime.mutableStateOf
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,8 +15,7 @@ import com.padi.pilipili.hook
 import com.padi.pilipili.invoke
 import com.padi.pilipili.log
 import com.padi.pilipili.new
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonObject
+import com.padi.pilipili.utils.SPHelper
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.Headers
@@ -40,9 +36,13 @@ object DownloadVideoButton : HookInit {
         val loader = application.classLoader
         addButton?.hook(before = {
             runCatching {
+                val spHelper = SPHelper.getInstance()
+                val enabled = spHelper.get("enable_download_video", false)
+                if (!enabled) return@hook
                 val list = it.args[0] as MutableList<Any?>
                 if (list.size >= 7) return@hook
                 val button = list[0]?.javaClass?.new(ActivityTools.getTopActivity())
+                if (ActivityTools.getTopActivity().javaClass.name != "com.bilibili.ship.theseus.detail.UnitedBizDetailsActivity") return@hook
                 button?.invoke("setVisible", true)
                 button?.invoke("setTitle", "视频缓存")
                 button?.invoke("setIcon", R.drawable.bot)
@@ -126,6 +126,7 @@ object DownloadVideoButton : HookInit {
                 }
             })
     }
+
 
     override fun dexFind(application: Application) {
         addButton = DexFinder.findMethod {

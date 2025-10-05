@@ -17,6 +17,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.ui.Modifier
 
 import androidx.compose.ui.unit.dp
+import com.padi.pilipili.screens.components.AutoSkipVideoAdSwitch
 import com.padi.pilipili.screens.components.CookieGetButton
 import com.padi.pilipili.screens.components.DownloadVideoButton
 import com.padi.pilipili.screens.components.ModifyPersonalDataButton
@@ -44,6 +45,7 @@ class ModuleSettingActivity : BaseActivity() {
                             ModifyPersonalDataButton()
                             ShowAvNumberSwitch()
                             DownloadVideoButton()
+                            AutoSkipVideoAdSwitch()
                         }
                     }
                 }

@@ -13,11 +13,11 @@ import androidx.compose.ui.Modifier
 import com.padi.pilipili.utils.SPHelper
 
 @Composable
-fun DownloadVideoButton() {
-    val title = "视频缓存(分享页面)"
-    val key = "enable_download_video"
+fun AutoSkipVideoAdSwitch() {
+    val title = "自动跳过植入式视频广告"
+    val key = "enable_auto_skip_video_ad"
     val spHelper = SPHelper.getInstance()
-    
+
     var isEnabled by remember {
         mutableStateOf(spHelper.get(key, false))
     }

@@ -2,26 +2,19 @@ package com.padi.pilipili
 
 import android.app.Application
 import android.content.Context
-import android.content.Intent
 import android.os.Build
-import android.view.View
-import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
+import com.padi.pilipili.hook.AutoSkipVideoAd
 import com.padi.pilipili.hook.CookieUtils
+import com.padi.pilipili.hook.DownloadVideoButton
 import com.padi.pilipili.hook.ModifyPersonalData
 import com.padi.pilipili.hook.SettingButton
 import com.padi.pilipili.hook.ShowAvNumber
-import com.padi.pilipili.screens.ModuleSettingActivity
 import com.padi.pilipili.utils.SPHelper
 import de.robv.android.xposed.IXposedHookLoadPackage
 import de.robv.android.xposed.IXposedHookZygoteInit
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 import top.sacz.xphelper.XpHelper
-import top.sacz.xphelper.ext.setFieldValue
-import top.sacz.xphelper.util.ActivityTools
-import com.padi.pilipili.R
-import com.padi.pilipili.hook.DownloadVideoButton
 
 
 class Hook : IXposedHookLoadPackage, IXposedHookZygoteInit {
@@ -40,14 +33,14 @@ class Hook : IXposedHookLoadPackage, IXposedHookZygoteInit {
                 CookieUtils,
                 ModifyPersonalData,
                 ShowAvNumber,
-                DownloadVideoButton
+                DownloadVideoButton,
+                AutoSkipVideoAd
             ).forEach { funName ->
                 funName.apply {
                     dexFind(application)
                     init(application)
                 }
             }
-
 
         })
     }
