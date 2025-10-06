@@ -13,11 +13,11 @@ import androidx.compose.ui.Modifier
 import com.padi.pilipili.utils.SPHelper
 
 @Composable
-fun DownloadVideoSwitch() {
-    val title = "视频缓存(分享页面)未完善"
-    val key = "enable_download_video"
+fun FreeCopySwitch() {
+    val title = "转复制操作为自由复制"
+    val key = "enable_free_copy"
     val spHelper = SPHelper.getInstance()
-    
+
     var isEnabled by remember {
         mutableStateOf(spHelper.get(key, false))
     }

@@ -6,6 +6,6 @@ interface HookInit {
 
     fun init(application: Application)
 
-    fun dexFind(application: Application)
+    fun findDex(application: Application)
 
 }

@@ -7,6 +7,8 @@ import androidx.annotation.RequiresApi
 import com.padi.pilipili.hook.AutoSkipVideoAd
 import com.padi.pilipili.hook.CookieUtils
 import com.padi.pilipili.hook.DownloadVideoButton
+import com.padi.pilipili.hook.FreeCopy
+import com.padi.pilipili.hook.HomeAnimation
 import com.padi.pilipili.hook.ModifyPersonalData
 import com.padi.pilipili.hook.SettingButton
 import com.padi.pilipili.hook.ShowAvNumber
@@ -34,13 +36,16 @@ class Hook : IXposedHookLoadPackage, IXposedHookZygoteInit {
                 ModifyPersonalData,
                 ShowAvNumber,
                 DownloadVideoButton,
-                AutoSkipVideoAd
+                AutoSkipVideoAd,
+                FreeCopy,
+                HomeAnimation
             ).forEach { funName ->
                 funName.apply {
-                    dexFind(application)
+                    findDex(application)
                     init(application)
                 }
             }
+
 
         })
     }

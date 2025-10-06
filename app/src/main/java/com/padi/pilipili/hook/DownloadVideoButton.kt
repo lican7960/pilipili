@@ -128,7 +128,7 @@ object DownloadVideoButton : HookInit {
     }
 
 
-    override fun dexFind(application: Application) {
+    override fun findDex(application: Application) {
         addButton = DexFinder.findMethod {
             searchPackages = arrayOf("com.bilibili.app.comm.supermenu.core")
             parameters = arrayOf(List::class.java)

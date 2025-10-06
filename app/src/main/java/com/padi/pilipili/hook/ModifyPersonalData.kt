@@ -41,7 +41,7 @@ object ModifyPersonalData : HookInit {
         })
     }
 
-    override fun dexFind(application: Application) {
+    override fun findDex(application: Application) {
         method = DexFinder.findMethod {
             modifiers = Modifier.PRIVATE
             declaredClass =
