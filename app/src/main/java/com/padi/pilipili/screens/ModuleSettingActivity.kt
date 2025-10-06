@@ -3,7 +3,6 @@ package com.padi.pilipili.screens
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Spacer
@@ -19,7 +18,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.padi.pilipili.screens.components.AutoSkipVideoAdSwitch
 import com.padi.pilipili.screens.components.CookieGetButton
-import com.padi.pilipili.screens.components.DownloadVideoButton
+import com.padi.pilipili.screens.components.DownloadVideoSwitch
+import com.padi.pilipili.screens.components.FreeCopySwitch
+import com.padi.pilipili.screens.components.HomeAnimationSwitch
 import com.padi.pilipili.screens.components.ModifyPersonalDataButton
 import com.padi.pilipili.screens.components.ShowAvNumberSwitch
 import com.padi.pilipili.ui.theme.PILIPILITheme
@@ -44,8 +45,10 @@ class ModuleSettingActivity : BaseActivity() {
                             Spacer(modifier = Modifier.width(8.dp))
                             ModifyPersonalDataButton()
                             ShowAvNumberSwitch()
-                            DownloadVideoButton()
+                            DownloadVideoSwitch()
                             AutoSkipVideoAdSwitch()
+                            FreeCopySwitch()
+                            HomeAnimationSwitch()
                         }
                     }
                 }

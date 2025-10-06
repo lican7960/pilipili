@@ -28,7 +28,7 @@ object ShowAvNumber : HookInit {
         return bvNumber
     }
 
-    override fun dexFind(application: Application) {
+    override fun findDex(application: Application) {
         method = DexFinder.findMethod {
             returnType = String::class.java
             modifiers = Modifier.STATIC or Modifier.PUBLIC

@@ -2,18 +2,13 @@ package com.padi.pilipili.hook
 
 import android.app.Application
 import android.content.Intent
-import android.os.Build
 import android.view.View
 import android.widget.TextView
-import androidx.annotation.RequiresApi
-import androidx.lifecycle.Lifecycle
 import com.padi.pilipili.HookInit
 import com.padi.pilipili.findClass
 import com.padi.pilipili.getObjectField
 import com.padi.pilipili.hook
-import com.padi.pilipili.log
 import com.padi.pilipili.screens.ModuleSettingActivity
-import com.padi.pilipili.setObjectField
 import top.sacz.xphelper.dexkit.DexFinder
 import top.sacz.xphelper.ext.setFieldValue
 import java.lang.reflect.Method
@@ -21,7 +16,7 @@ import java.lang.reflect.Modifier
 
 object SettingButton : HookInit {
     private var addButton: Method? = null
-    private var onClick: Method? = null
+    private var onClick: List<Method>? = null
     override fun init(application: Application) {
         val loader = application.classLoader
         addButton?.hook(
@@ -52,29 +47,33 @@ object SettingButton : HookInit {
 
             })
 
-        onClick?.hook(before = {
-            val view = it.args[0] as View
-            val thisObject = it.thisObject
-            thisObject.javaClass.declaredFields.forEach { field ->
-                field.isAccessible = true
-                val value = field.get(thisObject)
-                if (value is TextView) {
-                    val tv = value
-                    val context = tv.context
-                    val title = tv.text
-                    if (title == "PiliPili") {
-                        it.result = null
-                        val intent = Intent(context, ModuleSettingActivity::class.java)
-                        context.startActivity(intent)
+        onClick?.forEach {
+            it.hook(before = {
+                val view = it.args[0] as View
+                val thisObject = it.thisObject
+                thisObject.javaClass.declaredFields.forEach { field ->
+                    field.isAccessible = true
+                    val value = field.get(thisObject)
+                    if (value is TextView) {
+                        val tv = value
+                        val context = tv.context
+                        val title = tv.text
+                        if (title == "PiliPili") {
+                            it.result = null
+                            val intent = Intent(context, ModuleSettingActivity::class.java)
+                            context.startActivity(intent)
+                        }
                     }
+
                 }
-            }
-        })
+            })
+        }
 
     }
 
 
-    override fun dexFind(application: Application) {
+    override fun findDex(application: Application) {
+        val loader = application.classLoader
         addButton = DexFinder.findMethod {
             modifiers = Modifier.PUBLIC
             parameters = arrayOf(
@@ -88,8 +87,7 @@ object SettingButton : HookInit {
                 DexFinder.findField {
                     fieldType =
                         "com.bilibili.lib.homepage.mine.MenuGroup".findClass(application.classLoader)
-                }
-            )
+                })
         }.firstOrNull()
 
 
@@ -107,7 +105,7 @@ object SettingButton : HookInit {
                     )
                 }.firstOrNull()
             )
-        }.firstOrNull()
+        }.find()
 
 
     }

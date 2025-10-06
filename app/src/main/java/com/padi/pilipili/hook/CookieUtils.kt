@@ -35,7 +35,7 @@ object CookieUtils : HookInit {
         return cookie
     }
 
-    override fun dexFind(application: Application) {
+    override fun findDex(application: Application) {
         decode = DexFinder.findMethod {
             searchPackages = arrayOf("com.bilibili.lib.accounts")
             parameters = arrayOf(String::class.java)

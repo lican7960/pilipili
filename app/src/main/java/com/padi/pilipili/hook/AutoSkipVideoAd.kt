@@ -19,7 +19,7 @@ import org.json.JSONArray
 import top.sacz.xphelper.util.ActivityTools
 import java.io.IOException
 
-object AutoSkipVideoAd : HookInit{
+object AutoSkipVideoAd : HookInit {
     override fun init(application: Application) {
         var jumpVideo = ""
         var lastJumpTime = 0L
@@ -31,6 +31,7 @@ object AutoSkipVideoAd : HookInit{
             Int::class.java,
             after = {
                 runCatching {
+                    jumpVideo=""
                     val spHelper = SPHelper.getInstance()
                     val enabled = spHelper.get("enable_auto_skip_video_ad", false)
                     if (!enabled) return@hookCtor
@@ -64,7 +65,7 @@ object AutoSkipVideoAd : HookInit{
                     if (!enabled) return@hook
                     val playerCoreService = it.result
                     val currentPosition = playerCoreService.invoke("getCurrentPosition") as Int
-                    if (jumpVideo.isBlank()) return@hook
+                    if (jumpVideo.isBlank() || jumpVideo == "[]") return@hook
                     val jsonArray = JSONArray(jumpVideo)
                     val now = System.currentTimeMillis()
                     if (now - lastJumpTime < 1000) return@hook
@@ -93,7 +94,7 @@ object AutoSkipVideoAd : HookInit{
 
     }
 
-    override fun dexFind(application: Application) {
+    override fun findDex(application: Application) {
 
     }
 
