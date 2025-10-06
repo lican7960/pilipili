@@ -8,7 +8,6 @@ import com.padi.pilipili.HookInit
 import com.padi.pilipili.findClass
 import com.padi.pilipili.getObjectField
 import com.padi.pilipili.hook
-import com.padi.pilipili.log
 import com.padi.pilipili.screens.ModuleSettingActivity
 import top.sacz.xphelper.dexkit.DexFinder
 import top.sacz.xphelper.ext.setFieldValue
@@ -17,7 +16,7 @@ import java.lang.reflect.Modifier
 
 object SettingButton : HookInit {
     private var addButton: Method? = null
-    private var onClick: Method? = null
+    private var onClick: List<Method>? = null
     override fun init(application: Application) {
         val loader = application.classLoader
         addButton?.hook(
@@ -48,25 +47,27 @@ object SettingButton : HookInit {
 
             })
 
-
-        onClick?.hook(before = {
-            val view = it.args[0] as View
-            val thisObject = it.thisObject
-            thisObject.javaClass.declaredFields.forEach { field ->
-                field.isAccessible = true
-                val value = field.get(thisObject)
-                if (value is TextView) {
-                    val tv = value
-                    val context = tv.context
-                    val title = tv.text
-                    if (title == "PiliPili") {
-                        it.result = null
-                        val intent = Intent(context, ModuleSettingActivity::class.java)
-                        context.startActivity(intent)
+        onClick?.forEach {
+            it.hook(before = {
+                val view = it.args[0] as View
+                val thisObject = it.thisObject
+                thisObject.javaClass.declaredFields.forEach { field ->
+                    field.isAccessible = true
+                    val value = field.get(thisObject)
+                    if (value is TextView) {
+                        val tv = value
+                        val context = tv.context
+                        val title = tv.text
+                        if (title == "PiliPili") {
+                            it.result = null
+                            val intent = Intent(context, ModuleSettingActivity::class.java)
+                            context.startActivity(intent)
+                        }
                     }
+
                 }
-            }
-        })
+            })
+        }
 
     }
 
@@ -95,8 +96,7 @@ object SettingButton : HookInit {
             modifiers = Modifier.PUBLIC
             parameters = arrayOf(View::class.java)
             invokeMethods = arrayOf(
-                "com.bilibili.base.util.ContextUtilKt".findClass(loader)
-                    .getMethod("findFragmentActivityOrNull"), DexFinder.findMethod {
+                DexFinder.findMethod {
                     modifiers = Modifier.STATIC or Modifier.PUBLIC
                     searchPackages = arrayOf("tv.danmaku.bili.ui.main2.mine")
                     returnType = Boolean::class.java
@@ -105,7 +105,7 @@ object SettingButton : HookInit {
                     )
                 }.firstOrNull()
             )
-        }.firstOrNull()
+        }.find()
 
 
     }
