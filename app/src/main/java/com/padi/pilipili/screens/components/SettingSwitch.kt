@@ -13,22 +13,30 @@ import androidx.compose.ui.Modifier
 import com.padi.pilipili.utils.SPHelper
 
 @Composable
-fun AutoSkipVideoAdSwitch() {
-    val title = "自动跳过植入式视频广告"
-    val key = "enable_auto_skip_video_ad"
+fun SettingSwitch(
+    modifier: Modifier = Modifier,
+    title: String,
+    key: String,
+    description: String? = null,
+) {
     val spHelper = SPHelper.getInstance()
 
     var isEnabled by remember {
         mutableStateOf(spHelper.get(key, false))
     }
-    ListItem(modifier = Modifier.clickable {
+
+    ListItem(modifier = modifier.clickable {
         isEnabled = !isEnabled
         spHelper.put(key, isEnabled)
-    }, headlineContent = { Text(title) }, trailingContent = {
+    }, headlineContent = {
+        Text(title)
+    }, supportingContent = description?.let {
+        { Text(it) }
+    }, trailingContent = {
         Switch(
-            checked = isEnabled, onCheckedChange = {
-                isEnabled = it
-                spHelper.put(key, it)
+            checked = isEnabled, onCheckedChange = { newState ->
+                isEnabled = newState
+                spHelper.put(key, newState)
             })
     })
 }
