@@ -8,6 +8,7 @@ import com.padi.pilipili.hook.AutoSkipVideoAd
 import com.padi.pilipili.hook.CookieUtils
 import com.padi.pilipili.hook.DownloadVideoButton
 import com.padi.pilipili.hook.FreeCopy
+import com.padi.pilipili.hook.HideGameMenu
 import com.padi.pilipili.hook.HomeAnimation
 import com.padi.pilipili.hook.ModifyPersonalData
 import com.padi.pilipili.hook.SettingButton
@@ -38,14 +39,14 @@ class Hook : IXposedHookLoadPackage, IXposedHookZygoteInit {
                 DownloadVideoButton,
                 AutoSkipVideoAd,
                 FreeCopy,
-                HomeAnimation
+                HomeAnimation,
+                HideGameMenu
             ).forEach { funName ->
                 funName.apply {
                     findDex(application)
                     init(application)
                 }
             }
-
 
         })
     }

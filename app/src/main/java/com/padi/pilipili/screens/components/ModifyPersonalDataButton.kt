@@ -2,16 +2,30 @@ package com.padi.pilipili.screens.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Switch
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.google.gson.Gson
@@ -44,9 +58,7 @@ fun ModifyPersonalDataButton() {
             InputField("following", "关注", value = savedPersonData?.following?.toString() ?: ""),
             InputField("follower", "粉丝", value = savedPersonData?.follower?.toString() ?: ""),
             InputField(
-                "newFollowers",
-                "新增粉丝",
-                value = savedPersonData?.newFollowers?.toString() ?: ""
+                "newFollowers", "新增粉丝", value = savedPersonData?.newFollowers?.toString() ?: ""
             ),
             InputField("bcoin", "B币", value = savedPersonData?.bcoin?.toString() ?: ""),
             InputField("coin", "硬币", value = savedPersonData?.coin?.toString() ?: ""),
@@ -65,21 +77,19 @@ fun ModifyPersonalDataButton() {
             text = {
                 Column {
                     ListItem(
-                        modifier = Modifier.clickable {
-                            isEnabled = !isEnabled
-                            spHelper.put("enable_modify_personal_data", isEnabled)
-                        },
-                        headlineContent = { Text("开启功能") },
-                        trailingContent = {
-                            Switch(
-                                checked = isEnabled,
-                                onCheckedChange = {
-                                    isEnabled = it
-                                    spHelper.put("enable_modify_personal_data", it)
-                                }
-                            )
-                        }
-                    )
+                        colors = ListItemDefaults.colors(
+                            containerColor = MaterialTheme.colorScheme.primaryContainer
+                        ), modifier = Modifier
+                            .clip(RoundedCornerShape(20.dp))
+                            .clickable {
+                                isEnabled = !isEnabled
+                                spHelper.put("enable_modify_personal_data", isEnabled)
+                            }, headlineContent = { Text("开启功能") }, trailingContent = {
+                            Switch(checked = isEnabled, onCheckedChange = {
+                                isEnabled = it
+                                spHelper.put("enable_modify_personal_data", it)
+                            })
+                        })
                     LazyVerticalGrid(
                         columns = GridCells.Fixed(2), modifier = Modifier.fillMaxWidth()
                     ) {
