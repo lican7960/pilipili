@@ -18,7 +18,6 @@ object SettingButton : HookInit {
     private var addButton: Method? = null
     private var onClick: List<Method>? = null
     override fun init(application: Application) {
-        val loader = application.classLoader
         addButton?.hook(
             before = {
                 val list = it.args[0] as MutableList<Any?>
@@ -77,16 +76,14 @@ object SettingButton : HookInit {
         addButton = DexFinder.findMethod {
             modifiers = Modifier.PUBLIC
             parameters = arrayOf(
-                List::class.java,
-                "com.bilibili.lib.homepage.mine.MenuGroup".findClass(application.classLoader)
+                List::class.java, "com.bilibili.lib.homepage.mine.MenuGroup".findClass(loader)
             )
             invokeMethods = arrayOf(
                 List::class.java.getMethod("clear")
             )
             usedFields = arrayOf(
                 DexFinder.findField {
-                    fieldType =
-                        "com.bilibili.lib.homepage.mine.MenuGroup".findClass(application.classLoader)
+                    fieldType = "com.bilibili.lib.homepage.mine.MenuGroup".findClass(loader)
                 })
         }.firstOrNull()
 
@@ -101,7 +98,7 @@ object SettingButton : HookInit {
                     searchPackages = arrayOf("tv.danmaku.bili.ui.main2.mine")
                     returnType = Boolean::class.java
                     parameters = arrayOf(
-                        "com.bilibili.lib.homepage.mine.MenuGroup.Item".findClass(application.classLoader)
+                        "com.bilibili.lib.homepage.mine.MenuGroup.Item".findClass(loader)
                     )
                 }.firstOrNull()
             )

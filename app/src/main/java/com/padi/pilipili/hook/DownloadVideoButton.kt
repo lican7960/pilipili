@@ -29,6 +29,7 @@ import java.io.IOException
 import java.lang.reflect.Method
 import java.lang.reflect.Modifier
 
+
 object DownloadVideoButton : HookInit {
     private var addButton: Method? = null
     private var onClick: Method? = null
