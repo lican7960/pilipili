@@ -49,6 +49,8 @@ object HomeAnimation : HookInit {
             })
     }
 
+
+
     override fun findDex(application: Application) {
         val param = DexFinder.findClass {
             interfaces = arrayOf(

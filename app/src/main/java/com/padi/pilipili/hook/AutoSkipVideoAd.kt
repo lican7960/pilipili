@@ -31,7 +31,7 @@ object AutoSkipVideoAd : HookInit {
             Int::class.java,
             after = {
                 runCatching {
-                    jumpVideo=""
+                    jumpVideo = ""
                     val spHelper = SPHelper.getInstance()
                     val enabled = spHelper.get("enable_auto_skip_video_ad", false)
                     if (!enabled) return@hookCtor

@@ -57,6 +57,22 @@ object ModifyPersonalData : HookInit {
                 Boolean::class.java
             )
         }.firstOrNull()
+        if (method == null) {
+            method = DexFinder.findMethod {
+                modifiers = Modifier.PRIVATE
+                declaredClass =
+                    "tv.danmaku.bili.ui.main2.mine.HomeUserCenterFragment".findClass(application.classLoader)
+                returnType = Void.TYPE
+                usedFields = arrayOf(
+                    DexFinder.findField {
+                        fieldName = "garbEntrance"
+                    })
+                parameters = arrayOf(
+                    "tv.danmaku.bili.ui.main2.api.AccountMine".findClass(application.classLoader),
+                    Boolean::class.java
+                )
+            }.firstOrNull()
+        }
 
     }
 }
